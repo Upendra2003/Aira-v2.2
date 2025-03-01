@@ -12,3 +12,4 @@ langchain_huggingface
 pymongo
 # error_handler
 faiss-cpu
+gunicorn 
