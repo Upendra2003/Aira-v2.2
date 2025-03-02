@@ -25,16 +25,25 @@ def get_database():
 
 def initialize_collections():
     """Ensure database is initialized before setting collections"""
-    global users_collection, chat_history_collection, feedback_collection
+    global users_collection, chat_history_collection, feedback_collection, blacklisted_tokens_collection
 
     try:
-        db = get_database()  # Ensure MongoDB is initialized before proceeding
-        print(f"🔍 Checking DB instance: {db}")
+        db = get_database()
+
+        if db is None:
+            print("❌ Database instance is None. Initialization failed!")
+            return
+
+        print(f"✅ Database instance fetched: {db}")
 
         users_collection = db["users"]
         chat_history_collection = db["chat_history"]
         feedback_collection = db["feedback"]
 
-        print(f"✅ Database collections initialized: {users_collection}, {chat_history_collection}, {feedback_collection}")
+        # 🔍 Debugging print statements
+        print(f"✅ Collections initialized successfully!")
+        # print(f"🔍 blacklisted_tokens_collection: {blacklisted_tokens_collection}")
+
     except RuntimeError as e:
         print(f"❌ Database initialization failed: {e}")
+

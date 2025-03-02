@@ -10,6 +10,7 @@ from assessment import assessment_bp
 from feedback import feedback_bp
 from user import user_bp
 from admin import admin_bp
+from models import mongo,users_collection,chat_history_collection,feedback_collection
 
 app = Flask(__name__)
 CORS(app)
@@ -46,6 +47,17 @@ def memory_usage():
     return jsonify({
         "rss_mb": memory_info.rss / 1024 / 1024,
         "vms_mb": memory_info.vms / 1024 / 1024,
+    })
+
+@app.route("/debug/db", methods=["GET"])
+def debug_db():
+    return jsonify({
+        "db_initialized": mongo.db is not None,
+        "collections": {
+            "users": users_collection is not None,
+            "chat_history": chat_history_collection is not None,
+            "feedback": feedback_collection is not None,
+        }
     })
 
 if __name__ == "__main__":

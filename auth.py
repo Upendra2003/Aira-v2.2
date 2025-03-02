@@ -105,3 +105,20 @@ def login():
 
     token = generate_token(user["_id"])
     return jsonify({"message": "Login successful", "token": token}), 200
+
+
+@auth_bp.route("/logout", methods=["POST"])
+def logout():
+    print("✅ Logout function called")  # Debugging statement
+
+    auth_header = request.headers.get("Authorization")
+    if not auth_header:
+        return jsonify({"error": "Authorization header is missing"}), 400
+
+    parts = auth_header.split()
+    if len(parts) != 2 or parts[0].lower() != "bearer":
+        return jsonify({"error": "Invalid Authorization header format. Expected 'Bearer <token>'"}), 400
+
+    print("✅ Logout successful (Token not stored or blocked)")
+    return jsonify({"message": "Logout successful"}), 200
+
