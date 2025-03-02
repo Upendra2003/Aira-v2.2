@@ -51,4 +51,4 @@ def memory_usage():
 if __name__ == "__main__":
     app.start_time = time.time()
     logging.info("Starting AIRA Therapist application")
-    app.run(host="0.0.0.0", port=PORT, debug=True)
+    app.run()
