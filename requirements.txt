@@ -1,6 +1,6 @@
 Flask
 flask-cors
-# flask-pymongo
+flask-pymongo
 python-dotenv
 bcrypt
 PyJWT
@@ -12,3 +12,4 @@ langchain_huggingface
 pymongo
 # error_handler
 faiss-cpu
+gunicorn 
