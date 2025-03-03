@@ -63,4 +63,4 @@ def debug_db():
 if __name__ == "__main__":
     app.start_time = time.time()
     logging.info("Starting AIRA Therapist application")
-    app.run()
+    app.run(debug=True)
