@@ -3,33 +3,35 @@ from flask_cors import CORS
 import time
 import logging
 from config import PORT
-from models import init_db,initialize_collections
-from auth import auth_bp
-from chat import chat_bp
-from assessment import assessment_bp
-from feedback import feedback_bp
-from user import user_bp
-from admin import admin_bp
-from models import mongo,users_collection,chat_history_collection,feedback_collection
+from database.models import init_db, mongo
+# Import blueprints after DB initialization
+import logging
 
 app = Flask(__name__)
 CORS(app)
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
-# Initialize MongoDB
-init_db(app)
+# Initialize MongoDB and collections - store the result
+db_initialized = init_db(app)
 
-# Initialize collections after DB is set up
-initialize_collections()
-
-# Register Blueprints
-app.register_blueprint(auth_bp)
-app.register_blueprint(chat_bp)
-app.register_blueprint(assessment_bp)
-app.register_blueprint(feedback_bp)
-app.register_blueprint(user_bp)
-app.register_blueprint(admin_bp)
-# app.register_blueprint(model_api_bp)
+# Only import blueprints after DB is initialized
+if db_initialized:
+    from routes.auth import auth_bp
+    from routes.chat import chat_bp
+    from routes.assessment import assessment_bp
+    from routes.feedback import feedback_bp
+    from routes.user import user_bp
+    from routes.admin import admin_bp
+    
+    # Register Blueprints
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(chat_bp)
+    app.register_blueprint(assessment_bp)
+    app.register_blueprint(feedback_bp)
+    app.register_blueprint(user_bp)
+    app.register_blueprint(admin_bp)
+    # app.register_blueprint(model_api_bp)
+    
 
 @app.route("/health", methods=["GET"])
 def health_check():
@@ -51,12 +53,14 @@ def memory_usage():
 
 @app.route("/debug/db", methods=["GET"])
 def debug_db():
+    from database.models import users_collection, chat_history_collection, feedback_collection, question_collection
     return jsonify({
         "db_initialized": mongo.db is not None,
         "collections": {
             "users": users_collection is not None,
             "chat_history": chat_history_collection is not None,
             "feedback": feedback_collection is not None,
+            "questions": question_collection is not None
         }
     })
 

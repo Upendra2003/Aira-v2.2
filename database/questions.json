@@ -1,0 +1,427 @@
+[
+    {
+        "id": 1,
+        "category": "Depression",
+        "question_text": "Over the past two weeks, how often have you felt down, depressed, or hopeless?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 2,
+        "category": "Depression",
+        "question_text": "Over the past two weeks, how often have you had trouble falling or staying asleep, or sleeping too much?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 3,
+        "category": "Depression",
+        "question_text": "Over the past two weeks, how often have you felt tired or had little energy?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 4,
+        "category": "Depression",
+        "question_text": "Over the past two weeks, how often have you had a poor appetite or been overeating?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 5,
+        "category": "Depression",
+        "question_text": "Over the past two weeks, how often have you felt bad about yourself — or that you are a failure or have let yourself or your family down?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 6,
+        "category": "Depression",
+        "question_text": "Over the past two weeks, how often have you had trouble concentrating on things, such as reading or watching television?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        "scores": [0, 1, 2, 3]
+    },
+     {
+        "id": 7,
+        "category": "Depression",
+        "question_text": "Over the past two weeks, how often have you been moving or speaking so slowly that other people could have noticed? Or the opposite — being so fidgety or restless that you have been moving around a lot more than usual?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 8,
+        "category": "Depression",
+        "question_text": "Over the past two weeks, how often have you had thoughts that you would be better off dead, or of hurting yourself in some way?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 9,
+        "category": "Anxiety",
+        "question_text": "Over the past two weeks, how often have you felt nervous, anxious, or on edge?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 10,
+        "category": "Anxiety",
+        "question_text": "Over the past two weeks, how often have you been unable to stop or control worrying?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 11,
+        "category": "Anxiety",
+        "question_text": "Over the past two weeks, how often have you worried too much about different things?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 12,
+        "category": "Anxiety",
+        "question_text": "Over the past two weeks, how often have you had trouble relaxing?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 13,
+        "category": "Anxiety",
+        "question_text": "Over the past two weeks, how often have you been so restless that it is hard to sit still?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 14,
+        "category": "Anxiety",
+        "question_text": "Over the past two weeks, how often have you become easily annoyed or irritable?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 15,
+        "category": "Anxiety",
+        "question_text": "Over the past two weeks, how often have you felt afraid as if something awful might happen?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 16,
+        "category": "Stress",
+        "question_text": "In the last month, how often have you felt that you were unable to control the important things in your life?",
+        "options": ["Never", "Almost Never", "Sometimes", "Fairly Often", "Very Often"],
+        "scores": [0, 1, 2, 3, 4]
+    },
+    {
+        "id": 17,
+        "category": "Stress",
+        "question_text": "In the last month, how often have you felt confident about your ability to handle your personal problems?",
+        "options": ["Very Often", "Fairly Often", "Sometimes", "Almost Never", "Never"],
+        "scores": [0, 1, 2, 3, 4] 
+    },
+    {
+        "id": 18,
+        "category": "Stress",
+        "question_text": "In the last month, how often have you felt that things were going your way?",
+        "options": ["Very Often", "Fairly Often", "Sometimes", "Almost Never", "Never"], 
+        "scores": [0, 1, 2, 3, 4] 
+    },
+    {
+        "id": 19,
+        "category": "Stress",
+        "question_text": "In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?",
+        "options": ["Never", "Almost Never", "Sometimes", "Fairly Often", "Very Often"],
+        "scores": [0, 1, 2, 3, 4]
+    },
+     {
+        "id": 20,
+        "category": "Loneliness",
+        "question_text": "How often do you feel that you lack companionship?",
+        "options": ["Hardly Ever", "Some of the Time", "Often"],
+        "scores": [1, 2, 3]
+    },
+    {
+        "id": 21,
+        "category": "Loneliness",
+        "question_text": "How often do you feel left out?",
+        "options": ["Hardly Ever", "Some of the Time", "Often"],
+        "scores": [1, 2, 3]
+    },
+     {
+        "id": 22,
+        "category": "Loneliness",
+        "question_text": "How often do you feel isolated from others?",
+        "options": ["Hardly Ever", "Some of the Time", "Often"],
+        "scores": [1, 2, 3]
+    },
+
+     {
+        "id": 23,
+        "category": "Self-Esteem",
+        "question_text": "On the whole, are you satisfied with yourself?",
+        "options": ["Strongly Disagree", "Disagree", "Agree", "Strongly Agree"], 
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 24,
+        "category": "Self-Esteem",
+        "question_text": "At times, do you think you are no good at all?",
+        "options": ["Strongly Agree", "Agree", "Disagree", "Strongly Disagree"],
+        "scores": [0, 1, 2, 3] 
+    },
+    {
+        "id": 25,
+        "category": "Self-Esteem",
+        "question_text": "Do you feel you have a number of good qualities?",
+        "options": ["Strongly Agree", "Agree", "Disagree", "Strongly Disagree"], 
+        "scores": [3, 2, 1, 0] 
+    },
+    {
+        "id": 26,
+        "category": "Self-Esteem",
+        "question_text": "Are you able to do things as well as most other people?",
+        "options": ["Strongly Agree", "Agree", "Disagree", "Strongly Disagree"],
+        "scores": [3, 2, 1, 0] 
+    },
+    {
+        "id": 27,
+        "category": "Self-Esteem",
+        "question_text": "Do you feel you don't have much to be proud of?",
+        "options": ["Strongly Agree", "Agree", "Disagree", "Strongly Disagree"],
+        "scores": [0, 1, 2, 3] 
+    },
+    {
+        "id": 28,
+        "category": "Self-Esteem",
+        "question_text": "Do you take a positive attitude toward yourself?",
+        "options": ["Strongly Agree", "Agree", "Disagree", "Strongly Disagree"],
+        "scores": [3, 2, 1, 0] 
+    },
+    {
+        "id": 29,
+        "category": "Self-Esteem",
+        "question_text": "On the whole, are you inclined to feel that you are a failure?",
+        "options": ["Strongly Agree", "Agree", "Disagree", "Strongly Disagree"],
+        "scores": [0, 1, 2, 3] 
+    },
+     {
+        "id": 30,
+        "category": "Self-Esteem",
+        "question_text": "Do you wish you could have more respect for yourself?",
+        "options": ["Strongly Agree", "Agree", "Disagree", "Strongly Disagree"],
+        "scores": [0, 1, 2, 3] 
+    },
+
+     {
+        "id": 31,
+        "category": "Resilience",
+        "question_text": "I tend to bounce back quickly after hard times.",
+        "options": ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"],
+        "scores": [1, 2, 3, 4, 5] 
+    },
+    {
+        "id": 32,
+        "category": "Resilience",
+        "question_text": "I have a hard time making it through stressful events.",
+        "options": ["Strongly Agree", "Agree", "Neutral", "Disagree", "Strongly Disagree"],
+        "scores": [1, 2, 3, 4, 5] 
+    },
+     {
+        "id": 33,
+        "category": "Resilience",
+        "question_text": "Having to cope with stress can make me stronger.",
+        "options": ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"],
+        "scores": [1, 2, 3, 4, 5] 
+    },
+
+    {
+        "id": 34,
+        "category": "Motivation",
+        "question_text": "I feel like I'm working toward a goal.",
+        "options": ["Not at all", "Somewhat", "Mostly", "Definitely"],
+        "scores": [0, 1, 2, 3]
+    },
+
+    {
+        "id": 35,
+        "category": "Motivation",
+        "question_text": "It's hard for me to get excited about anything.",
+        "options": ["Definitely", "Mostly", "Somewhat", "Not at all"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 36,
+        "category": "Social Support",
+        "question_text": "I know there is someone I can turn to when I need help.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 37,
+        "category": "Social Support",
+        "question_text": "I don't have anyone I can really talk to.",
+        "options": ["Very True", "Mostly True", "Somewhat True", "Not at all true"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 38,
+        "category": "Anger",
+        "question_text": "I get angry more easily than most people.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 39,
+        "category": "Anger",
+        "question_text": "It's difficult for me to control my temper.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 40,
+        "category": "Guilt",
+        "question_text": "I often feel guilty about things I've done in the past.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 41,
+        "category": "Guilt",
+        "question_text": "I find it hard to forgive myself for my mistakes.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 42,
+        "category": "Trauma",
+        "question_text": "I've had experiences in my life that continue to cause me distress.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 43,
+        "category": "Trauma",
+        "question_text": "I often have intrusive thoughts or memories of past events.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 44,
+        "category": "Grief",
+        "question_text": "I'm still grieving a loss I experienced.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 45,
+        "category": "Grief",
+        "question_text": "I feel like I'll never get over this loss.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 46,
+        "category": "Substance Use",
+        "question_text": "I sometimes use substances to cope with my feelings.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 47,
+        "category": "Substance Use",
+        "question_text": "I worry about my substance use.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 48,
+        "category": "Sleep",
+        "question_text": "I have trouble falling asleep.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 49,
+        "category": "Sleep",
+        "question_text": "I don't feel rested when I wake up.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 50,
+        "category": "Relationships",
+        "question_text": "I'm struggling with a relationship.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 51,
+        "category": "Relationships",
+        "question_text": "I feel misunderstood by the people in my life.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 52,
+        "category": "Work/School",
+        "question_text": "I'm feeling overwhelmed by my workload.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 53,
+        "category": "Work/School",
+        "question_text": "I'm not enjoying my work/school.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 54,
+        "category": "Finances",
+        "question_text": "I'm stressed about my finances.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 55,
+        "category": "Finances",
+        "question_text": "I'm worried about my financial future.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 56,
+        "category": "Body Image",
+        "question_text": "I'm unhappy with my body.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 57,
+        "category": "Body Image",
+        "question_text": "I'm self-conscious about my appearance.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 58,
+        "category": "Spirituality",
+        "question_text": "I feel disconnected from my spiritual beliefs.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 59,
+        "category": "Spirituality",
+        "question_text": "I'm questioning my faith.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    },
+    {
+        "id": 60,
+        "category": "General Wellbeing",
+        "question_text": "Overall, I'm satisfied with my life.",
+        "options": ["Not at all true", "Somewhat True", "Mostly True", "Very True"],
+        "scores": [0, 1, 2, 3]
+    }
+
+]

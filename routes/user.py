@@ -1,9 +1,16 @@
 from flask import Blueprint, request, jsonify
-from models import get_database, initialize_collections
+from database.models import get_database
 from bson import ObjectId
-from auth import verify_jwt_token
+from werkzeug.security import generate_password_hash
+from routes.auth import verify_jwt_token
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 user_bp = Blueprint("user", __name__, url_prefix="/api/user")
+
+DEFAULT_PROFILE_PHOTO = os.getenv("PROFILE_PIC")
 
 @user_bp.route("/profile", methods=["GET"])
 def get_profile():
@@ -12,7 +19,6 @@ def get_profile():
     if not user_id:
         return jsonify({"error": "Unauthorized. Please log in."}), 401
 
-    # Get the database dynamically when the route is called
     db = get_database()
     users_collection = db["users"]
 
@@ -21,6 +27,7 @@ def get_profile():
         return jsonify({"error": "User not found"}), 404
 
     user["user_id"] = str(user["_id"])
+    user["profile_photo"] = user.get("profile_photo", DEFAULT_PROFILE_PHOTO)  # Set default if missing
     del user["_id"]
 
     return jsonify({"profile": user}), 200
@@ -36,11 +43,11 @@ def update_profile():
     new_username = data.get("username")
     new_email = data.get("email")
     new_password = data.get("password")
+    new_profile_photo = data.get("profile_photo")  # Accept new profile photo
 
     if not new_username or not new_email:
         return jsonify({"error": "Username and email are required."}), 400
 
-    # Get the database dynamically when the route is called
     db = get_database()
     users_collection = db["users"]
 
@@ -49,15 +56,17 @@ def update_profile():
         return jsonify({"error": "Email is already in use."}), 400
 
     # Prepare update document
-    update_data = {"username": new_username, "email": new_email}
-    
-    # If password is provided, hash it and add to update
-    if new_password:
-        from werkzeug.security import generate_password_hash
-        hashed_password = generate_password_hash(new_password)
-        update_data["password"] = hashed_password
+    update_data = {
+        "username": new_username,
+        "email": new_email
+    }
 
-    # Update the user document
+    if new_password:
+        update_data["password"] = generate_password_hash(new_password)
+
+    if new_profile_photo:  # Update profile photo if provided
+        update_data["profile_photo"] = new_profile_photo
+
     result = users_collection.update_one(
         {"_id": ObjectId(user_id)},
         {"$set": update_data}

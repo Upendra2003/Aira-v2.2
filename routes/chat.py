@@ -3,7 +3,7 @@ import time
 import gc
 import jwt
 from utils import create_chain, get_session_history, store_chat_history
-from auth import verify_jwt_token
+from routes.auth import verify_jwt_token
 from utils import get_session_id
 import uuid
 

@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
-from models import get_database
+from database.models import get_database
 from bson import ObjectId
-from auth import verify_jwt_token
+from routes.auth import verify_jwt_token
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/api/admin")
 

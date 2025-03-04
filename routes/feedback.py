@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 import time
-from models import get_database, initialize_collections
-from auth import verify_jwt_token  
+from database.models import get_database
+from routes.auth import verify_jwt_token  
 from utils import get_session_id
 
 feedback_bp = Blueprint("feedback", __name__, url_prefix="/api/feedback")

@@ -3,8 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 import datetime
 from config import JWT_SECRET_KEY
-from models import users_collection
-import uuid
+
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/api/auth")
 
@@ -55,12 +54,13 @@ def register():
       - Checks if a user with the provided email exists.
       - Hashes the password and stores the user.
     """
-    from models import users_collection  # Ensure fresh import if needed
+    from database.models import users_collection  # Ensure fresh import if needed
 
     if users_collection is None:
         return jsonify({"error": "Database connection error. Try again later."}), 500
 
     data = request.json
+    user_name=data.get("username")
     email = data.get("email")
     password = data.get("password")
 
@@ -71,7 +71,7 @@ def register():
         return jsonify({"error": "User already exists"}), 409
 
     hashed_password = generate_password_hash(password)
-    users_collection.insert_one({"email": email, "password": hashed_password})
+    users_collection.insert_one({"username":user_name,"email": email, "password": hashed_password})
 
     return jsonify({"message": "User registered successfully!"}), 201
 
@@ -84,7 +84,7 @@ def login():
       - Checks password hash.
       - Returns a JWT token if credentials are valid.
     """
-    from models import users_collection  # Ensure proper import
+    from database.models import users_collection  # Ensure proper import
 
     if users_collection is None:
         return jsonify({"error": "Database connection error. Please try again later."}), 500

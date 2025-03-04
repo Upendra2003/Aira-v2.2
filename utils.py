@@ -81,7 +81,7 @@ def format_retrieved(docs):
 
 def get_session_history(session_id: str) -> BaseChatMessageHistory:
     """Get chat history for a session, with caching."""
-    from models import chat_history_collection  # local import to avoid circular dependency
+    from database.models import chat_history_collection  # local import to avoid circular dependency
     if session_id in session_cache:
         cache_time, history = session_cache[session_id]
         if time.time() - cache_time < 300:  # 5 minutes cache
@@ -128,7 +128,7 @@ def create_chain():
 
 def store_chat_history(session_id, user_input, ai_response):
     """Store chat history in MongoDB."""
-    from models import chat_history_collection
+    from database.models import chat_history_collection
     try:
         chat_history_collection.update_one(
             {"session_id": session_id},
