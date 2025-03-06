@@ -1,10 +1,12 @@
 from flask import Blueprint, request, jsonify
-import time
+from datetime import datetime
 from database.models import get_database
 from routes.auth import verify_jwt_token  
 from utils import get_session_id
+import logging
 
 feedback_bp = Blueprint("feedback", __name__, url_prefix="/api/feedback")
+logger = logging.getLogger(__name__)
 
 def get_feedback_collections():
     """Retrieve feedback collections dynamically."""
@@ -26,7 +28,7 @@ def submit_feedback():
     feedback_type = data.get("feedback_type")
 
     if not session_id or not response_id or feedback_type not in ["like", "dislike"]:
-        return jsonify({"error": "Invalid feedback data."}), 400
+        return jsonify({"error": "Invalid feedback data", "details": "session_id, response_id, and feedback_type ('like' or 'dislike') are required."}), 400
 
     # Find user feedback history or create new
     user_feedback = feedback_collection.find_one({"user_id": user_id, "session_id": session_id})
@@ -34,23 +36,27 @@ def submit_feedback():
     new_feedback = {
         "response_id": response_id,
         "feedback_type": feedback_type,
-        "timestamp": time.time()
+        "timestamp": datetime.utcnow()
     }
 
-    if user_feedback:
-        feedback_collection.update_one(
-            {"user_id": user_id, "session_id": session_id},
-            {"$push": {"feedbacks": new_feedback}}
-        )
-    else:
-        feedback_collection.insert_one({
-            "user_id": user_id,
-            "session_id": session_id,
-            "feedbacks": [new_feedback]
-        })
+    try:
+        if user_feedback:
+            feedback_collection.update_one(
+                {"user_id": user_id, "session_id": session_id},
+                {"$push": {"feedbacks": new_feedback}}
+            )
+        else:
+            feedback_collection.insert_one({
+                "user_id": user_id,
+                "session_id": session_id,
+                "feedbacks": [new_feedback]
+            })
+        logger.info(f"Feedback submitted by user {user_id} for session {session_id}")
+    except Exception as e:
+        logger.error(f"Database error while submitting feedback: {e}")
+        return jsonify({"error": "Database error", "details": str(e)}), 500
 
     return jsonify({"message": "Feedback recorded successfully"}), 200
-
 
 @feedback_bp.route("/daily_feedback", methods=["POST"])
 def submit_daily_feedback():
@@ -67,17 +73,22 @@ def submit_daily_feedback():
     comment = data.get("comment", "")
 
     if not session_id or rating is None:
-        return jsonify({"error": "Invalid data. 'rating' is required."}), 400
+        return jsonify({"error": "Invalid data", "details": "'session_id' and 'rating' are required."}), 400
 
     if not isinstance(rating, (int, float)) or not (1 <= rating <= 5):
-        return jsonify({"error": "Rating must be between 1 and 5."}), 400
+        return jsonify({"error": "Invalid rating", "details": "Rating must be a number between 1 and 5."}), 400
 
-    daily_feedback_collection.insert_one({
-        "user_id": user_id,
-        "session_id": session_id,
-        "rating": rating,
-        "comment": comment,
-        "timestamp": time.time()
-    })
+    try:
+        daily_feedback_collection.insert_one({
+            "user_id": user_id,
+            "session_id": session_id,
+            "rating": rating,
+            "comment": comment,
+            "timestamp": datetime.utcnow()
+        })
+        logger.info(f"Daily feedback submitted by user {user_id} for session {session_id}")
+    except Exception as e:
+        logger.error(f"Database error while submitting daily feedback: {e}")
+        return jsonify({"error": "Database error", "details": str(e)}), 500
 
     return jsonify({"message": "Daily experience feedback submitted successfully"}), 200

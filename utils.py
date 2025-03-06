@@ -10,10 +10,12 @@ from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.runnables import RunnableMap
-from config import GROQ_API_KEY
-from config import JWT_SECRET_KEY
+from config import GROQ_API_KEY, JWT_SECRET_KEY
 from flask import request
 import jwt
+import datetime
+from database.models import chat_history_collection
+from bson import ObjectId
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +25,7 @@ embedding_model = None
 retriever = None
 session_cache = {}
 
-# Define system prompt and prompt template
+# System prompt for AIRA
 system_prompt = """🌿 You are AIRA, an AI therapist dedicated to supporting individuals in their emotional well-being and mental health. Your role is to provide a safe, supportive, and judgment-free space for users to express their concerns. 🤗💙
 
 📝 Guidelines:
@@ -81,10 +83,9 @@ def format_retrieved(docs):
 
 def get_session_history(session_id: str) -> BaseChatMessageHistory:
     """Get chat history for a session, with caching."""
-    from database.models import chat_history_collection  # local import to avoid circular dependency
     if session_id in session_cache:
         cache_time, history = session_cache[session_id]
-        if time.time() - cache_time < 300:  # 5 minutes cache
+        if time.time() - cache_time < 300:  # 5-minute cache
             return history
 
     history = ChatMessageHistory()
@@ -94,7 +95,7 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
             for msg in session.get("messages", []):
                 if msg["role"] == "user":
                     history.add_user_message(msg["message"])
-                else:
+                elif msg["role"] == "AI":
                     history.add_ai_message(msg["message"])
     except Exception as e:
         logger.error(f"Error fetching chat history: {e}")
@@ -106,7 +107,7 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
 def clean_session_cache():
     """Remove old sessions from cache."""
     current_time = time.time()
-    expired_sessions = [sid for sid, (timestamp, _) in session_cache.items() if current_time - timestamp > 600]
+    expired_sessions = [sid for sid, (timestamp, _) in session_cache.items() if current_time - timestamp > 600]  # 10 minutes
     for sid in expired_sessions:
         del session_cache[sid]
 
@@ -126,9 +127,8 @@ def create_chain():
         history_messages_key="chat_history"
     )
 
-def store_chat_history(session_id, user_input, ai_response):
+def store_chat_history(session_id: str, user_input: str, ai_response: str):
     """Store chat history in MongoDB."""
-    from database.models import chat_history_collection
     try:
         chat_history_collection.update_one(
             {"session_id": session_id},
@@ -147,20 +147,45 @@ def store_chat_history(session_id, user_input, ai_response):
         logger.error(f"Error storing chat history: {e}")
 
 def get_session_id():
-    """Extracts session_id from request or generates a new one."""
+    """Extract session_id from the JWT token."""
     auth_header = request.headers.get("Authorization")
-    if not auth_header:
+    if not auth_header or "Bearer " not in auth_header:
         return None
-    
     try:
-        token = auth_header.split(" ")[1]  # Extract token from "Bearer <JWT>"
+        token = auth_header.split(" ")[1]
         payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
-        user_id = payload.get("user_id")
-        if not user_id:
+        session_id = payload.get("session_id")
+        if not session_id:
+            logger.error("No session_id in token")
             return None
-        # Generate session_id using user_id
-        return f"session_{user_id}"
-    except jwt.ExpiredSignatureError:
+        return session_id
+    except (jwt.ExpiredSignatureError, jwt.InvalidTokenError) as e:
+        logger.error(f"Token error: {e}")
         return None
-    except jwt.InvalidTokenError:
-        return None
+
+def store_session(session_id: str, user_id: str):
+    """Store a new session in MongoDB with a default title."""
+    try:
+        existing_session = chat_history_collection.find_one({"session_id": session_id})
+        if not existing_session:
+            chat_history_collection.insert_one({
+                "session_id": session_id,
+                "user_id": user_id,
+                "title": "New Session",
+                "messages": [],
+                "created_at": datetime.datetime.utcnow()
+            })
+            logger.info(f"New session created: {session_id}")
+        else:
+            logger.info(f"Session {session_id} already exists.")
+    except Exception as e:
+        logger.error(f"Error storing session: {e}")
+
+def get_user_sessions(user_id: str) -> list:
+    """Retrieve all session details for the user."""
+    try:
+        sessions = chat_history_collection.find({"user_id": ObjectId(user_id)}, {"session_id": 1, "title": 1, "created_at": 1})
+        return [{"session_id": s["session_id"], "title": s.get("title", "Untitled"), "created_at": s["created_at"]} for s in sessions]
+    except Exception as e:
+        logger.error(f"Error retrieving user sessions: {e}")
+        return []
