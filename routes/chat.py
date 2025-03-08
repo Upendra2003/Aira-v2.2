@@ -28,6 +28,15 @@ def generate_ai_response(user_input: str, session_id: str) -> dict:
     # Store only the message string
     store_chat_history(session_id, user_input, ai_response)
 
+    # Update session title if it's the first message
+    session = chat_history_collection.find_one({"session_id": session_id})
+    if session and session.get("title") == "New Session":
+        title = " ".join(user_input.split()[:5]) + "..."  # Use first 5 words as title
+        chat_history_collection.update_one(
+            {"session_id": session_id},
+            {"$set": {"title": title}}
+        )
+
     return {
         "response_id": response_id,
         "message": ai_response,
@@ -47,7 +56,15 @@ def chat():
         return jsonify({"error": "Invalid session or token"}), 401
 
     response_data = generate_ai_response(user_input, session_id)
-    return jsonify(response_data), 200
+
+    # Fetch updated session title to return it in response
+    session = chat_history_collection.find_one({"session_id": session_id})
+    session_title = session.get("title", "New Session") if session else "New Session"
+
+    return jsonify({
+        **response_data,
+        "session_title": session_title
+    }), 200
 
 @chat_bp.route("/history", methods=["GET"])
 def chat_history():
@@ -66,7 +83,7 @@ def chat_history():
             return jsonify({"error": "Session not found or access denied"}), 403
 
         history = session.get("messages", [])
-        return jsonify({"history": history}), 200
+        return jsonify({"history": history, "title": session.get("title", "New Session")}), 200
     except Exception as e:
         logger.error(f"Error retrieving chat history: {e}")
         return jsonify({"error": "Internal server error"}), 500
@@ -79,7 +96,6 @@ def save_session():
         return jsonify({"error": "Unauthorized. Please log in."}), 401
 
     session_id = get_session_id()
-    print(session_id)
     if not session_id:
         return jsonify({"error": "Invalid session"}), 400
 
