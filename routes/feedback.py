@@ -26,37 +26,52 @@ def submit_feedback():
     session_id = get_session_id()
     response_id = data.get("response_id")
     feedback_type = data.get("feedback_type")
+    comment = data.get("comment", "")
 
     if not session_id or not response_id or feedback_type not in ["like", "dislike"]:
-        return jsonify({"error": "Invalid feedback data", "details": "session_id, response_id, and feedback_type ('like' or 'dislike') are required."}), 400
+        return jsonify({"error": "Invalid feedback data", 
+                        "details": "session_id, response_id, and feedback_type ('like' or 'dislike') are required."}), 400
 
-    # Find user feedback history or create new
-    user_feedback = feedback_collection.find_one({"user_id": user_id, "session_id": session_id})
+    if feedback_type == "dislike" and not comment.strip():
+        return jsonify({"error": "Comment required", 
+                        "details": "A comment is required when submitting a 'dislike' feedback."}), 400
 
     new_feedback = {
         "response_id": response_id,
         "feedback_type": feedback_type,
+        "comment": comment if feedback_type == "dislike" else "",
         "timestamp": datetime.utcnow()
     }
 
     try:
-        if user_feedback:
+        # Check if feedback for this response_id already exists
+        existing_feedback = feedback_collection.find_one(
+            {"user_id": user_id, "session_id": session_id, "feedbacks.response_id": response_id},
+            {"feedbacks.$": 1}  # Projection to fetch only matching feedback
+        )
+
+        if existing_feedback:
+            # Update existing feedback entry
             feedback_collection.update_one(
-                {"user_id": user_id, "session_id": session_id},
-                {"$push": {"feedbacks": new_feedback}}
+                {"user_id": user_id, "session_id": session_id, "feedbacks.response_id": response_id},
+                {"$set": {"feedbacks.$": new_feedback}}
             )
         else:
-            feedback_collection.insert_one({
-                "user_id": user_id,
-                "session_id": session_id,
-                "feedbacks": [new_feedback]
-            })
-        logger.info(f"Feedback submitted by user {user_id} for session {session_id}")
+            # Append if no feedback exists for this response_id
+            feedback_collection.update_one(
+                {"user_id": user_id, "session_id": session_id},
+                {"$push": {"feedbacks": new_feedback}},
+                upsert=True  # Create a new document if user_id + session_id doesn't exist
+            )
+
+        logger.info(f"Feedback updated by user {user_id} for session {session_id}, response {response_id}")
+
     except Exception as e:
         logger.error(f"Database error while submitting feedback: {e}")
         return jsonify({"error": "Database error", "details": str(e)}), 500
 
     return jsonify({"message": "Feedback recorded successfully"}), 200
+
 
 @feedback_bp.route("/daily_feedback", methods=["POST"])
 def submit_daily_feedback():

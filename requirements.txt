@@ -13,3 +13,4 @@ pymongo
 # error_handler
 faiss-cpu
 gunicorn 
+nltk
