@@ -39,7 +39,7 @@ def submit_feedback():
     new_feedback = {
         "response_id": response_id,
         "feedback_type": feedback_type,
-        "comment": comment if feedback_type == "dislike" else "",
+        "comment": comment,
         "timestamp": datetime.utcnow()
     }
 
